@@ -1,4 +1,4 @@
-# terraform-azure-appcfg
+# App Configurations
 
 This terraform module simplifies the process of creating and managing app configurations on azure with customizable keys and features, offering a flexible and powerful solution for managing configuration settings and feature flags through code.
 
