@@ -18,7 +18,8 @@ module "rg" {
 }
 
 module "app_configuration" {
-  source = "../../"
+  source  = "cloudnationhq/appcfg/azure"
+  version = "~> 1.0"
 
   resource_group = module.rg.groups.demo.name
   location       = module.rg.groups.demo.location
