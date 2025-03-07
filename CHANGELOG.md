@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v1.1.0...v1.1.1) (2025-03-07)
+
+
+### Bug Fixes
+
+* move app configuration data owner role assignment to parent module ([#8](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/8)) ([43af01d](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/43af01db73b5f5634963c4d79eaf9cec60e772fa))
+
 ## [1.1.0](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v1.0.0...v1.1.0) (2025-03-07)
 
 
