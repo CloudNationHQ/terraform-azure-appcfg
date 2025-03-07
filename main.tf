@@ -1,3 +1,5 @@
+data "azurerm_client_config" "current" {}
+
 # app configurations
 resource "azurerm_app_configuration" "conf" {
   for_each = var.configs
@@ -16,4 +18,13 @@ resource "azurerm_app_configuration" "conf" {
   tags = try(
     each.value.tags, var.tags, null
   )
+}
+
+# roles
+resource "azurerm_role_assignment" "role" {
+  for_each = var.configs
+
+  scope                = azurerm_app_configuration.conf[each.key].id
+  role_definition_name = "App Configuration Data Owner"
+  principal_id         = data.azurerm_client_config.current.object_id
 }
