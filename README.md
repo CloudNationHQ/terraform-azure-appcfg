@@ -46,9 +46,6 @@ End-to-end testing is not conducted on these modules, as they are individual com
 | Name | Type |
 |------|------|
 | [azurerm_app_configuration.conf](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration) | resource |
-| [azurerm_app_configuration_key.keys](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_key) | resource |
-| [azurerm_role_assignment.role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 
 ## Inputs
 
@@ -64,7 +61,6 @@ End-to-end testing is not conducted on these modules, as they are individual com
 | Name | Description |
 |------|-------------|
 | <a name="output_configs"></a> [configs](#output\_configs) | contains app configurations |
-| <a name="output_keys"></a> [keys](#output\_keys) | contains app configuration keys |
 <!-- END_TF_DOCS -->
 
 ## Testing

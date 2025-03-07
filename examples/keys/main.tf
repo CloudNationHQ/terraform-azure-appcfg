@@ -67,6 +67,32 @@ module "storage2" {
   }
 }
 
+module "keys" {
+  source  = "cloudnationhq/appcfg/azure//modules/keys"
+  version = "~> 1.0"
+
+  configuration_store_id = module.app_configuration.configs.dev.id
+
+  configs = {
+    keys = {
+      blob_container_id = {
+        key   = "Storage:BlobContainer:Id"
+        value = "function-deployments"
+      },
+
+      primary_storage_connection = {
+        key                 = "Storage:PrimaryAccount:ConnectionString"
+        vault_key_reference = module.kv.secrets.connection-string1.id
+      },
+
+      backup_storage_connection = {
+        key                 = "Storage:BackupAccount:ConnectionString"
+        vault_key_reference = module.kv.secrets.connection-string2.id
+      }
+    }
+  }
+}
+
 module "app_configuration" {
   source  = "cloudnationhq/appcfg/azure"
   version = "~> 1.0"
@@ -79,23 +105,6 @@ module "app_configuration" {
       name                  = module.naming.app_configuration.name_unique
       sku                   = "standard"
       public_network_access = "Enabled"
-
-      keys = {
-        blob_container_id = {
-          key   = "Storage:BlobContainer:Id"
-          value = "function-deployments"
-        },
-
-        primary_storage_connection = {
-          key                 = "Storage:PrimaryAccount:ConnectionString"
-          vault_key_reference = module.kv.secrets.connection-string1.id
-        },
-
-        backup_storage_connection = {
-          key                 = "Storage:BackupAccount:ConnectionString"
-          vault_key_reference = module.kv.secrets.connection-string2.id
-        }
-      }
     }
   }
 }
