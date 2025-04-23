@@ -22,6 +22,12 @@ variable "configs" {
   }
 }
 
+variable "ignore_value_changes_keys" {
+  description = "List of keys to ignore value changes"
+  type        = list(string)
+  default     = []
+}
+
 variable "configuration_store_id" {
   description = "id of the app configuration"
   type        = string
