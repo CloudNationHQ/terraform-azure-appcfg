@@ -5,6 +5,10 @@ variable "configs" {
       key                 = string
       value               = optional(string, null)
       vault_key_reference = optional(string, null)
+      etag                = optional(string, null)
+      label               = optional(string, null)
+      locked              = optional(bool, false)
+      content_type        = optional(string, null)
     })), {})
   })
 
@@ -21,4 +25,10 @@ variable "configs" {
 variable "configuration_store_id" {
   description = "id of the app configuration"
   type        = string
+}
+
+variable "tags" {
+  description = "tags to be added to the resources"
+  type        = map(string)
+  default     = {}
 }

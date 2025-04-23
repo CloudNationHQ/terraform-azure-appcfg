@@ -13,4 +13,18 @@ resource "azurerm_app_configuration_key" "keys" {
   type                   = each.value.vault_key_reference != null ? "vault" : "kv"
   value                  = each.value.vault_key_reference == null ? each.value.value : null
   vault_key_reference    = each.value.vault_key_reference
+  etag                   = each.value.etag
+  label                  = each.value.label
+  locked                 = each.value.locked
+  content_type           = each.value.content_type
+
+  tags = try(
+    each.value.tags, var.tags, null
+  )
+  lifecycle {
+    ignore_changes = [
+      # Dynamic ignore based on key name
+      contains(var.ignore_value_changes_keys, each.key) ? value : "no_ignore"
+    ]
+  }
 }
