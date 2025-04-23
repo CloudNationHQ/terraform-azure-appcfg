@@ -21,10 +21,12 @@ resource "azurerm_app_configuration_key" "keys" {
   tags = try(
     each.value.tags, var.tags, null
   )
+
   lifecycle {
+    # Ignore value changes for specified keys
     ignore_changes = [
-      # Dynamic ignore based on key name
-      contains(var.ignore_value_changes_keys, each.key) ? value : "no_ignore"
+      for attr in ["value", "vault_key_reference"] : attr
+      if contains(var.ignored_keys, each.key)
     ]
   }
 }

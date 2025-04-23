@@ -22,10 +22,9 @@ variable "configs" {
   }
 }
 
-variable "ignore_value_changes_keys" {
-  description = "List of keys to ignore value changes"
-  type        = list(string)
-  default     = []
+variable "ignored_keys" {
+  type    = set(string)
+  default = []
 }
 
 variable "configuration_store_id" {
