@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.0](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v1.1.1...v2.0.0) (2025-05-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* The data structure changed, causing a recreate on existing resources.
+
+### Features
+
+* add type definitions ([#14](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/14)) ([cdf6ac1](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/cdf6ac1df8ad4b469e1b305b24502eaed903f914))
+* **deps:** bump golang.org/x/crypto from 0.32.0 to 0.35.0 in /tests ([#12](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/12)) ([b42ff5b](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/b42ff5b32da712a239f55ca4b8d170bfa074e7aa))
+* **deps:** bump golang.org/x/net from 0.34.0 to 0.38.0 in /tests ([#13](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/13)) ([6094f16](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/6094f167271bb5c762ad17881433a6769a747af8))
+* small refactor ([#16](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/16)) ([ffa3b24](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/ffa3b249cfe244e3b1ee93b4884ceb736f83bcf4))
+
 ## [1.1.1](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v1.1.0...v1.1.1) (2025-03-07)
 
 
