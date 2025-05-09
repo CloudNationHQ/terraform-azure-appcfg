@@ -2,7 +2,7 @@ variable "configs" {
   description = "Contains configuration for app configurations."
   type = map(object({
     name                                             = string
-    resource_group                                   = optional(string, null)
+    resource_group_name                              = optional(string, null)
     location                                         = optional(string, null)
     sku                                              = optional(string, "free")
     local_auth_enabled                               = optional(bool, true)
@@ -21,7 +21,7 @@ variable "location" {
   default     = null
 }
 
-variable "resource_group" {
+variable "resource_group_name" {
   description = "default resource group to be used."
   type        = string
   default     = null
