@@ -6,8 +6,8 @@ resource "azurerm_app_configuration" "conf" {
 
   resource_group_name = coalesce(
     lookup(
-      each.value, "resource_group", null
-    ), var.resource_group
+      each.value, "resource_group_name", null
+    ), var.resource_group_name
   )
 
   location = coalesce(
@@ -24,8 +24,8 @@ resource "azurerm_app_configuration" "conf" {
   data_plane_proxy_private_link_delegation_enabled = each.value.data_plane_proxy_private_link_delegation_enabled
   data_plane_proxy_authentication_mode             = each.value.data_plane_proxy_authentication_mode
 
-  tags = try(
-    each.value.tags, var.tags, null
+  tags = coalesce(
+    each.value.tags, var.tags
   )
 }
 
