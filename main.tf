@@ -24,6 +24,17 @@ resource "azurerm_app_configuration" "conf" {
   data_plane_proxy_private_link_delegation_enabled = each.value.data_plane_proxy_private_link_delegation_enabled
   data_plane_proxy_authentication_mode             = each.value.data_plane_proxy_authentication_mode
 
+  dynamic "identity" {
+    for_each = lookup(each.value, "identity", null) != null ? [each.value.identity] : []
+    content {
+      type = identity.value.type
+      identity_ids = concat(
+        try([azurerm_user_assigned_identity.identity["identity"].id], []),
+        lookup(identity.value, "identity_ids", [])
+      )
+    }
+  }
+
   tags = coalesce(
     each.value.tags, var.tags
   )
