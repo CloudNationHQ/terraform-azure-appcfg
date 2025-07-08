@@ -57,7 +57,7 @@ map(object({
       type         = string
       identity_ids = optional(list(string), null)
     }), null)
-    tags                                             = optional(map(string))
+    tags = optional(map(string))
   }))
 ```
 
