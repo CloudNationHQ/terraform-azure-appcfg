@@ -53,6 +53,10 @@ map(object({
     soft_delete_retention_days                       = optional(number, null)
     data_plane_proxy_private_link_delegation_enabled = optional(bool, false)
     data_plane_proxy_authentication_mode             = optional(string, "Local")
+    identity = optional(object({
+      type         = string
+      identity_ids = optional(list(string), null)
+    }), null)
     tags                                             = optional(map(string))
   }))
 ```
