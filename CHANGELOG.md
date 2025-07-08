@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v2.1.0...v2.1.1) (2025-07-08)
+
+
+### Bug Fixes
+
+* identity block ([#20](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/20)) ([5d6eeee](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/5d6eeeedddf44d83328e27c5c64f2dce05a0658e))
+
 ## [2.1.0](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v2.0.0...v2.1.0) (2025-07-08)
 
 
