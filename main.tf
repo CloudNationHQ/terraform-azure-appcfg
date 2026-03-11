@@ -24,12 +24,30 @@ resource "azurerm_app_configuration" "conf" {
   data_plane_proxy_private_link_delegation_enabled = each.value.data_plane_proxy_private_link_delegation_enabled
   data_plane_proxy_authentication_mode             = each.value.data_plane_proxy_authentication_mode
 
+  dynamic "encryption" {
+    for_each = lookup(each.value, "encryption", null) != null ? [each.value.encryption] : []
+
+    content {
+      identity_client_id       = encryption.value.identity_client_id
+      key_vault_key_identifier = encryption.value.key_vault_key_identifier
+    }
+  }
+
   dynamic "identity" {
     for_each = lookup(each.value, "identity", null) != null ? [each.value.identity] : []
 
     content {
       type         = identity.value.type
       identity_ids = identity.value.identity_ids
+    }
+  }
+
+  dynamic "replica" {
+    for_each = lookup(each.value, "replica", {})
+
+    content {
+      name     = replica.value.name
+      location = replica.value.location
     }
   }
 

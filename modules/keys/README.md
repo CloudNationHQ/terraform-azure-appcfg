@@ -37,8 +37,12 @@ Type:
 object({
     keys = optional(map(object({
       key                 = string
-      value               = optional(string, null)
-      vault_key_reference = optional(string, null)
+      label               = optional(string)
+      value               = optional(string)
+      vault_key_reference = optional(string)
+      content_type        = optional(string)
+      locked              = optional(bool, false)
+      tags                = optional(map(string), {})
     })), {})
   })
 ```
