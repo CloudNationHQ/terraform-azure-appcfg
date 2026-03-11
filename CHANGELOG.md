@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.2.0](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v2.1.1...v2.2.0) (2026-03-11)
+
+
+### Features
+
+* **deps:** bump github.com/cloudnationhq/az-cn-go-validor in /tests ([#31](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/31)) ([bedd50e](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/bedd50e9f18239c5d65be1657a1a134cbb2308fc))
+* **deps:** bump github.com/ulikunitz/xz from 0.5.10 to 0.5.14 in /tests ([#24](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/24)) ([652eb9a](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/652eb9afd75a396a37e9158ba9130e8d26d71c58))
+* **deps:** bump golang.org/x/crypto from 0.36.0 to 0.45.0 in /tests ([#30](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/30)) ([70b2c98](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/70b2c98b5f4674077ba2fb26ab173945a9533419))
+* enhance schema validation for app configurations and keys ([#32](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/32)) ([df2802a](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/df2802a890224ec6d242fd18e5392405ae850119))
+
 ## [2.1.1](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v2.1.0...v2.1.1) (2025-07-08)
 
 
