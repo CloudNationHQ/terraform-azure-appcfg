@@ -28,39 +28,32 @@ module "app_configuration" {
     dev = {
       name = module.naming.app_configuration.name_unique
       sku  = "standard"
-    }
-  }
-}
 
-module "features" {
-  source  = "cloudnationhq/appcfg/azure//modules/features"
-  version = "~> 2.0"
+      features = {
+        dark_mode = {
+          name        = "DarkMode"
+          description = "enables dark mode for all users"
+          enabled     = true
+        }
 
-  configuration_store_id = module.app_configuration.configs.dev.id
-
-  configs = {
-    features = {
-      dark_mode = {
-        name        = "DarkMode"
-        description = "enables dark mode for all users"
-        enabled     = true
-      }
-
-      beta_rollout = {
-        name    = "BetaRollout"
-        enabled = false
-        label   = "beta"
-        targeting_filter = {
-          default_rollout_percentage = 10
-          users                      = ["alice@example.com", "bob@example.com"]
-          groups = {
-            internal = {
-              name               = "internal-testers"
-              rollout_percentage = 100
+        beta_rollout = {
+          name    = "BetaRollout"
+          enabled = false
+          label   = "beta"
+          targeting_filter = {
+            default_rollout_percentage = 10
+            users                      = ["alice@example.com", "bob@example.com"]
+            groups = {
+              internal = {
+                name               = "internal-testers"
+                rollout_percentage = 100
+              }
             }
           }
         }
       }
     }
   }
+
+  tags = { environment = "demo" }
 }

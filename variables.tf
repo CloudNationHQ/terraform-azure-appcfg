@@ -24,6 +24,32 @@ variable "configs" {
       location = string
     })), {})
     tags = optional(map(string))
+    features = optional(map(object({
+      name                    = optional(string)
+      description             = optional(string)
+      enabled                 = optional(bool)
+      key                     = optional(string)
+      label                   = optional(string)
+      locked                  = optional(bool)
+      percentage_filter_value = optional(number)
+      tags                    = optional(map(string))
+      targeting_filter = optional(object({
+        default_rollout_percentage = number
+        groups = optional(map(object({
+          name               = string
+          rollout_percentage = number
+        })), {})
+        users = optional(list(string), [])
+      }))
+      timewindow_filter = optional(object({
+        start = optional(string)
+        end   = optional(string)
+      }))
+      custom_filter = optional(map(object({
+        name       = string
+        parameters = optional(map(string), {})
+      })), {})
+    })), {})
   }))
 
   validation {
