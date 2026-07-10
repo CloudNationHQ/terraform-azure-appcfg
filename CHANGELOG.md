@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.3.0](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v2.2.0...v2.3.0) (2026-07-10)
+
+
+### Features
+
+* add app configuration feature submodule ([#39](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/39)) ([e77c00f](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/e77c00fcb743f26777ff1a14c688062c6a6e96dd))
+* **deps:** bump github.com/cloudnationhq/az-cn-go-validor in /tests ([#35](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/35)) ([7374410](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/73744109282ae203d2b38425ba8a029a8f78e42f))
+* **deps:** bump github.com/cloudnationhq/az-cn-go-validor in /tests ([#38](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/38)) ([d755610](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/d7556108e4d5c3101264ea86c88f8cf4247bc23b))
+
 ## [2.2.0](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v2.1.1...v2.2.0) (2026-03-11)
 
 
