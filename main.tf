@@ -56,6 +56,73 @@ resource "azurerm_app_configuration" "conf" {
   )
 }
 
+# features
+resource "azurerm_app_configuration_feature" "this" {
+  for_each = {
+    for pair in flatten([
+      for config_key, config in var.configs : [
+        for feature_key, feature in config.features : {
+          key         = "${config_key}:${feature_key}"
+          config_key  = config_key
+          feature     = feature
+          feature_key = feature_key
+        }
+      ]
+    ]) : pair.key => pair
+  }
+
+  configuration_store_id  = azurerm_app_configuration.conf[each.value.config_key].id
+  name                    = coalesce(each.value.feature.name, each.value.feature_key)
+  description             = each.value.feature.description
+  enabled                 = each.value.feature.enabled
+  key                     = each.value.feature.key
+  label                   = each.value.feature.label
+  locked                  = each.value.feature.locked
+  percentage_filter_value = each.value.feature.percentage_filter_value
+  tags                    = coalesce(each.value.feature.tags, var.tags)
+
+  dynamic "targeting_filter" {
+    for_each = each.value.feature.targeting_filter != null ? { "this" = each.value.feature.targeting_filter } : {}
+
+    content {
+      default_rollout_percentage = targeting_filter.value.default_rollout_percentage
+      users                      = targeting_filter.value.users
+
+      dynamic "groups" {
+        for_each = targeting_filter.value.groups
+
+        content {
+          name               = groups.value.name
+          rollout_percentage = groups.value.rollout_percentage
+        }
+      }
+    }
+  }
+
+  dynamic "timewindow_filter" {
+    for_each = each.value.feature.timewindow_filter != null ? { "this" = each.value.feature.timewindow_filter } : {}
+
+    content {
+      start = timewindow_filter.value.start
+      end   = timewindow_filter.value.end
+    }
+  }
+
+  dynamic "custom_filter" {
+    for_each = each.value.feature.custom_filter
+
+    content {
+      name       = custom_filter.value.name
+      parameters = custom_filter.value.parameters
+    }
+  }
+
+  # role assignment must exist before features can be written via the data plane
+  depends_on = [
+    azurerm_role_assignment.role
+  ]
+}
+
 # roles
 resource "azurerm_role_assignment" "role" {
   for_each = var.configs

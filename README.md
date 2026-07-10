@@ -28,6 +28,7 @@ The following providers are used by this module:
 The following resources are used by this module:
 
 - [azurerm_app_configuration.conf](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration) (resource)
+- [azurerm_app_configuration_feature.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) (resource)
 - [azurerm_role_assignment.role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
 - [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
 
@@ -66,6 +67,32 @@ map(object({
       location = string
     })), {})
     tags = optional(map(string))
+    features = optional(map(object({
+      name                    = optional(string)
+      description             = optional(string)
+      enabled                 = optional(bool)
+      key                     = optional(string)
+      label                   = optional(string)
+      locked                  = optional(bool)
+      percentage_filter_value = optional(number)
+      tags                    = optional(map(string))
+      targeting_filter = optional(object({
+        default_rollout_percentage = number
+        groups = optional(map(object({
+          name               = string
+          rollout_percentage = number
+        })), {})
+        users = optional(list(string), [])
+      }))
+      timewindow_filter = optional(object({
+        start = optional(string)
+        end   = optional(string)
+      }))
+      custom_filter = optional(map(object({
+        name       = string
+        parameters = optional(map(string), {})
+      })), {})
+    })), {})
   }))
 ```
 
@@ -104,6 +131,10 @@ The following outputs are exported:
 ### <a name="output_configs"></a> [configs](#output\_configs)
 
 Description: Contains configuration for app configurations.
+
+### <a name="output_features"></a> [features](#output\_features)
+
+Description: Contains app configuration features.
 <!-- END_TF_DOCS -->
 
 ## Goals
