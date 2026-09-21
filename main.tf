@@ -1,18 +1,15 @@
-data "azurerm_client_config" "current" {}
+data "azurerm_client_config" "this" {}
 
 # app configurations
-resource "azurerm_app_configuration" "conf" {
-  for_each = var.configs
+resource "azurerm_app_configuration" "this" {
+  for_each = var.app_configurations
 
   resource_group_name = coalesce(
-    lookup(
-      each.value, "resource_group_name", null
-    ), var.resource_group_name
+    each.value.resource_group_name, var.resource_group_name
   )
 
   location = coalesce(
-    lookup(each.value, "location", null
-    ), var.location
+    each.value.location, var.location
   )
 
   name                                             = each.value.name
@@ -25,7 +22,7 @@ resource "azurerm_app_configuration" "conf" {
   data_plane_proxy_authentication_mode             = each.value.data_plane_proxy_authentication_mode
 
   dynamic "encryption" {
-    for_each = lookup(each.value, "encryption", null) != null ? [each.value.encryption] : []
+    for_each = each.value.encryption != null ? { "this" = each.value.encryption } : {}
 
     content {
       identity_client_id       = encryption.value.identity_client_id
@@ -34,7 +31,7 @@ resource "azurerm_app_configuration" "conf" {
   }
 
   dynamic "identity" {
-    for_each = lookup(each.value, "identity", null) != null ? [each.value.identity] : []
+    for_each = each.value.identity != null ? { "this" = each.value.identity } : {}
 
     content {
       type         = identity.value.type
@@ -43,7 +40,7 @@ resource "azurerm_app_configuration" "conf" {
   }
 
   dynamic "replica" {
-    for_each = lookup(each.value, "replica", {})
+    for_each = each.value.replica
 
     content {
       name     = replica.value.name
@@ -60,7 +57,7 @@ resource "azurerm_app_configuration" "conf" {
 resource "azurerm_app_configuration_feature" "this" {
   for_each = {
     for pair in flatten([
-      for config_key, config in var.configs : [
+      for config_key, config in var.app_configurations : [
         for feature_key, feature in config.features : {
           key         = "${config_key}:${feature_key}"
           config_key  = config_key
@@ -71,18 +68,25 @@ resource "azurerm_app_configuration_feature" "this" {
     ]) : pair.key => pair
   }
 
-  configuration_store_id  = azurerm_app_configuration.conf[each.value.config_key].id
-  name                    = coalesce(each.value.feature.name, each.value.feature_key)
+  name = coalesce(
+    each.value.feature.name, each.value.feature_key
+  )
+
+  configuration_store_id  = azurerm_app_configuration.this[each.value.config_key].id
   description             = each.value.feature.description
   enabled                 = each.value.feature.enabled
   key                     = each.value.feature.key
   label                   = each.value.feature.label
   locked                  = each.value.feature.locked
   percentage_filter_value = each.value.feature.percentage_filter_value
-  tags                    = coalesce(each.value.feature.tags, var.tags)
+  etag                    = each.value.feature.etag
+
+  tags = coalesce(
+    each.value.feature.tags, var.tags
+  )
 
   dynamic "targeting_filter" {
-    for_each = each.value.feature.targeting_filter != null ? { "this" = each.value.feature.targeting_filter } : {}
+    for_each = each.value.feature.targeting_filter
 
     content {
       default_rollout_percentage = targeting_filter.value.default_rollout_percentage
@@ -100,7 +104,7 @@ resource "azurerm_app_configuration_feature" "this" {
   }
 
   dynamic "timewindow_filter" {
-    for_each = each.value.feature.timewindow_filter != null ? { "this" = each.value.feature.timewindow_filter } : {}
+    for_each = each.value.feature.timewindow_filter
 
     content {
       start = timewindow_filter.value.start
@@ -119,15 +123,40 @@ resource "azurerm_app_configuration_feature" "this" {
 
   # role assignment must exist before features can be written via the data plane
   depends_on = [
-    azurerm_role_assignment.role
+    azurerm_role_assignment.this
   ]
 }
 
-# roles
-resource "azurerm_role_assignment" "role" {
-  for_each = var.configs
+# role assignments
+resource "azurerm_role_assignment" "this" {
+  for_each = {
+    for pair in flatten([
+      for config_key, config in var.app_configurations : [
+        for assignment_key, assignment in config.role_assignments : {
+          key            = "${config_key}:${assignment_key}"
+          config_key     = config_key
+          assignment     = assignment
+          assignment_key = assignment_key
+        }
+      ]
+    ]) : pair.key => pair
+  }
 
-  scope                = azurerm_app_configuration.conf[each.key].id
-  role_definition_name = "App Configuration Data Owner"
-  principal_id         = data.azurerm_client_config.current.object_id
+  scope = coalesce(
+    each.value.assignment.scope, azurerm_app_configuration.this[each.value.config_key].id
+  )
+
+  principal_id = coalesce(
+    each.value.assignment.principal_id, data.azurerm_client_config.this.object_id
+  )
+
+  name                                   = each.value.assignment.name
+  role_definition_name                   = each.value.assignment.role_definition_name
+  role_definition_id                     = each.value.assignment.role_definition_id
+  principal_type                         = each.value.assignment.principal_type
+  condition                              = each.value.assignment.condition
+  condition_version                      = each.value.assignment.condition_version
+  delegated_managed_identity_resource_id = each.value.assignment.delegated_managed_identity_resource_id
+  skip_service_principal_aad_check       = each.value.assignment.skip_service_principal_aad_check
+  description                            = each.value.assignment.description
 }

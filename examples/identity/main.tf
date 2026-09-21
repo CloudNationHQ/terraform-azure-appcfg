@@ -1,13 +1,13 @@
 module "naming" {
   source  = "cloudnationhq/naming/azure"
-  version = "~> 0.26"
+  version = "~> 0.32"
 
   suffix = ["demo", "dev"]
 }
 
 module "rg" {
   source  = "cloudnationhq/rg/azure"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   groups = {
     demo = {
@@ -19,9 +19,9 @@ module "rg" {
 
 module "identity" {
   source  = "cloudnationhq/uai/azure"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
-  config = {
+  identity = {
     name                = module.naming.user_assigned_identity.name_unique
     location            = module.rg.groups.demo.location
     resource_group_name = module.rg.groups.demo.name
@@ -30,17 +30,17 @@ module "identity" {
 
 module "app_configuration" {
   source  = "cloudnationhq/appcfg/azure"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   resource_group_name = module.rg.groups.demo.name
   location            = module.rg.groups.demo.location
 
-  configs = {
+  app_configurations = {
     dev = {
       name = module.naming.app_configuration.name_unique
       identity = {
         type         = "UserAssigned"
-        identity_ids = [module.identity.config.id]
+        identity_ids = [module.identity.identity.id]
       }
     }
   }

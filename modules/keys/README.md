@@ -9,25 +9,25 @@ The following requirements are needed by this module:
 
 - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.0)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 5.0)
 
 ## Providers
 
 The following providers are used by this module:
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 4.0)
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 5.0)
 
 ## Resources
 
 The following resources are used by this module:
 
-- [azurerm_app_configuration_key.keys](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_key) (resource)
+- [azurerm_app_configuration_key.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_key) (resource)
 
 ## Required Inputs
 
 The following input variables are required:
 
-### <a name="input_configs"></a> [configs](#input\_configs)
+### <a name="input_app_configuration_keys"></a> [app\_configuration\_keys](#input\_app\_configuration\_keys)
 
 Description: Configuration for Azure App Configuration keys
 
@@ -41,6 +41,7 @@ object({
       value               = optional(string)
       vault_key_reference = optional(string)
       content_type        = optional(string)
+      etag                = optional(string)
       locked              = optional(bool, false)
       tags                = optional(map(string), {})
     })), {})
