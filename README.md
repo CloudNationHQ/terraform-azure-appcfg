@@ -15,28 +15,28 @@ The following requirements are needed by this module:
 
 - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.0)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 5.0)
 
 ## Providers
 
 The following providers are used by this module:
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 4.0)
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 5.0)
 
 ## Resources
 
 The following resources are used by this module:
 
-- [azurerm_app_configuration.conf](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration) (resource)
+- [azurerm_app_configuration.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration) (resource)
 - [azurerm_app_configuration_feature.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) (resource)
-- [azurerm_role_assignment.role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
-- [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
+- [azurerm_role_assignment.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) (resource)
+- [azurerm_client_config.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) (data source)
 
 ## Required Inputs
 
 The following input variables are required:
 
-### <a name="input_configs"></a> [configs](#input\_configs)
+### <a name="input_app_configurations"></a> [app\_configurations](#input\_app\_configurations)
 
 Description: Contains configuration for app configurations.
 
@@ -47,13 +47,13 @@ map(object({
     name                                             = string
     resource_group_name                              = optional(string)
     location                                         = optional(string)
-    sku                                              = optional(string, "free")
-    local_auth_enabled                               = optional(bool, true)
+    sku                                              = optional(string)
+    local_auth_enabled                               = optional(bool)
     public_network_access                            = optional(string, "Enabled")
-    purge_protection_enabled                         = optional(bool, false)
+    purge_protection_enabled                         = optional(bool)
     soft_delete_retention_days                       = optional(number)
-    data_plane_proxy_private_link_delegation_enabled = optional(bool, false)
-    data_plane_proxy_authentication_mode             = optional(string, "Local")
+    data_plane_proxy_private_link_delegation_enabled = optional(bool)
+    data_plane_proxy_authentication_mode             = optional(string)
     encryption = optional(object({
       key_vault_key_identifier = optional(string)
       identity_client_id       = optional(string)
@@ -67,6 +67,19 @@ map(object({
       location = string
     })), {})
     tags = optional(map(string))
+    role_assignments = optional(map(object({
+      name                                   = optional(string)
+      scope                                  = optional(string)
+      role_definition_name                   = optional(string)
+      role_definition_id                     = optional(string)
+      principal_id                           = optional(string)
+      principal_type                         = optional(string)
+      condition                              = optional(string)
+      condition_version                      = optional(string)
+      delegated_managed_identity_resource_id = optional(string)
+      skip_service_principal_aad_check       = optional(bool)
+      description                            = optional(string)
+    })), {})
     features = optional(map(object({
       name                    = optional(string)
       description             = optional(string)
@@ -75,19 +88,20 @@ map(object({
       label                   = optional(string)
       locked                  = optional(bool)
       percentage_filter_value = optional(number)
+      etag                    = optional(string)
       tags                    = optional(map(string))
-      targeting_filter = optional(object({
+      targeting_filter = optional(map(object({
         default_rollout_percentage = number
         groups = optional(map(object({
           name               = string
           rollout_percentage = number
         })), {})
         users = optional(list(string), [])
-      }))
-      timewindow_filter = optional(object({
+      })), {})
+      timewindow_filter = optional(map(object({
         start = optional(string)
         end   = optional(string)
-      }))
+      })), {})
       custom_filter = optional(map(object({
         name       = string
         parameters = optional(map(string), {})
@@ -135,6 +149,10 @@ Description: Contains configuration for app configurations.
 ### <a name="output_features"></a> [features](#output\_features)
 
 Description: Contains app configuration features.
+
+### <a name="output_role_assignments"></a> [role\_assignments](#output\_role\_assignments)
+
+Description: Contains all role assignments scoped to the app configurations.
 <!-- END_TF_DOCS -->
 
 ## Goals
@@ -157,11 +175,7 @@ To update the module's documentation run `make doc`
 
 We welcome contributions from the community! Whether it's reporting a bug, suggesting a new feature, or submitting a pull request, your input is highly valued.
 
-For more information, please see our contribution [guidelines](./CONTRIBUTING.md). <br><br>
-
-<a href="https://github.com/cloudnationhq/terraform-azure-appcfg/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=cloudnationhq/terraform-azure-appcfg" />
-</a>
+For more information, please see our contribution [guidelines](./CONTRIBUTING.md).
 
 ## License
 

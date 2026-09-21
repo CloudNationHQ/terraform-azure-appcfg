@@ -1,13 +1,13 @@
 module "naming" {
   source  = "cloudnationhq/naming/azure"
-  version = "~> 0.26"
+  version = "~> 0.32"
 
   suffix = ["demo", "dev"]
 }
 
 module "rg" {
   source  = "cloudnationhq/rg/azure"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   groups = {
     demo = {
@@ -19,9 +19,8 @@ module "rg" {
 
 module "kv" {
   source  = "cloudnationhq/kv/azure"
-  version = "~> 4.0"
+  version = "~> 6.0"
 
-  naming = local.naming
 
   vault = {
     name                = module.naming.key_vault.name_unique
@@ -49,7 +48,7 @@ module "kv" {
 
 module "storage1" {
   source  = "cloudnationhq/sa/azure"
-  version = "~> 4.0"
+  version = "~> 5.0"
 
   storage = {
     name                = module.naming.storage_account.name_unique
@@ -60,7 +59,7 @@ module "storage1" {
 
 module "storage2" {
   source  = "cloudnationhq/sa/azure"
-  version = "~> 4.0"
+  version = "~> 5.0"
 
   storage = {
     name                = "${module.naming.storage_account.name_unique}2"
@@ -71,11 +70,11 @@ module "storage2" {
 
 module "keys" {
   source  = "cloudnationhq/appcfg/azure//modules/keys"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   configuration_store_id = module.app_configuration.configs.dev.id
 
-  configs = {
+  app_configuration_keys = {
     keys = {
       blob_container_id = {
         key   = "Storage:BlobContainer:Id"
@@ -84,29 +83,37 @@ module "keys" {
 
       primary_storage_connection = {
         key                 = "Storage:PrimaryAccount:ConnectionString"
-        vault_key_reference = module.kv.secrets.connection-string1.id
+        vault_key_reference = module.kv.secrets["connection-string1"].id
       },
 
       backup_storage_connection = {
         key                 = "Storage:BackupAccount:ConnectionString"
-        vault_key_reference = module.kv.secrets.connection-string2.id
+        vault_key_reference = module.kv.secrets["connection-string2"].id
       }
     }
   }
+
+  depends_on = [module.app_configuration]
 }
 
 module "app_configuration" {
   source  = "cloudnationhq/appcfg/azure"
-  version = "~> 2.0"
+  version = "~> 3.0"
 
   resource_group_name = module.rg.groups.demo.name
   location            = module.rg.groups.demo.location
 
-  configs = {
+  app_configurations = {
     dev = {
       name                  = module.naming.app_configuration.name_unique
       sku                   = "standard"
       public_network_access = "Enabled"
+
+      role_assignments = {
+        data_owner = {
+          role_definition_name = "App Configuration Data Owner"
+        }
+      }
     }
   }
 }

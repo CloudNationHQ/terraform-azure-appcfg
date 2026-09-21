@@ -38,3 +38,4 @@ terraform.rc
 
 # Claude Code
 .claude
+.terraform.lock.hcl
