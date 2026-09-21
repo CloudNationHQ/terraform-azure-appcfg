@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.0.0](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v2.3.0...v3.0.0) (2026-09-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* this change causes recreates
+
+### Features
+
+* azurerm provider 5 upgrade ([#44](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/44)) ([dcb96c9](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/dcb96c96f77fdbb37f4af832864f57cc6086a78e))
+* **deps:** bump golang.org/x/crypto from 0.45.0 to 0.52.0 in /tests ([#41](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/41)) ([c8a8c41](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/c8a8c417f411e43763cb533d105a7b29298c0fe0))
+
 ## [2.3.0](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v2.2.0...v2.3.0) (2026-07-10)
 
 
