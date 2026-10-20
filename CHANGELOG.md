@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v3.0.0...v3.1.0) (2026-10-20)
+
+
+### Features
+
+* **deps:** bump github.com/klauspost/compress in /tests ([#45](https://github.com/CloudNationHQ/terraform-azure-appcfg/issues/45)) ([327957b](https://github.com/CloudNationHQ/terraform-azure-appcfg/commit/327957bba1c006c6fc7dc9c174e086c4d602986e))
+
 ## [3.0.0](https://github.com/CloudNationHQ/terraform-azure-appcfg/compare/v2.3.0...v3.0.0) (2026-09-21)
 
 
